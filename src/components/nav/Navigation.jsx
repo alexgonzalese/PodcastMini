@@ -1,11 +1,11 @@
 import React from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
-import PodcastList from "../Pages/podcastList";
+import PodcastList from "../pages/Home";
 import ChapterDetails from "../pages/ChapterDetails";
 import "../../styles/NavBar.css";
 import { LinkContainer } from "react-router-bootstrap";
-export default function Navigation() {
+export default function Navigation(podcastsList) {
   return (
     <>
       <Navbar bg="dark" variant="dark">
@@ -23,9 +23,15 @@ export default function Navigation() {
         </Nav>
       </Navbar>
       <Routes>
-        <Route path="/" element={<PodcastList />} />
+        <Route
+          path="/"
+          element={<PodcastList podcastsListAll={podcastsList} />}
+        />
         <Route path="/detalle" element={<ChapterDetails />} />
-        <Route path="/contacto" element={<PodcastList />} />
+        <Route
+          path="/contacto"
+          element={<PodcastList podcastsListAll={podcastsList} />}
+        />
       </Routes>
     </>
   );
