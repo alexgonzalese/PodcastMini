@@ -2,12 +2,15 @@ main{
     display: flex;
     align-items: center;
     flex-direction: row;
+    width: 100%;
 }
 .page{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    width: 100%;
+    max-width: 800px;
 }
 form{
     display: flex;
@@ -19,5 +22,35 @@ form{
   display: flex;
   flex-wrap: wrap;
 }
-
+.podcasts{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display:grid;
+    width: 100%;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap:32px;
+}
+.podcast{
+    text-align: center;
+}
+.podcast img{
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
+}
+.podcast h3, .podcast p{
+    margin: 0;
+}
+.detailspage{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+}
+.AppBarStyle{
+    position: static;
+    gap: 32px;
+}
 

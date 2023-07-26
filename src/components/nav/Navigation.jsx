@@ -1,11 +1,13 @@
 import React from "react";
 import { Link, Route, Routes } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
-import PodcastList from "../pages/Home";
+import Home from "../pages/Home";
 import ChapterDetails from "../pages/ChapterDetails";
 import "../../styles/NavBar.css";
 import { LinkContainer } from "react-router-bootstrap";
-export default function Navigation(podcastsList) {
+import PodcastDetail from "../pages/PodcastDetail";
+
+export default function Navigation() {
   return (
     <>
       <Navbar bg="dark" variant="dark">
@@ -15,7 +17,7 @@ export default function Navigation(podcastsList) {
             <Link to="/">Inicio</Link>
           </Nav.Link>
           <Nav.Link href="#features">
-            <Link to="/detalle">Detalle</Link>
+            <Link to="/PodcastDetail/k">Detalle</Link>
           </Nav.Link>
           <Nav.Link href="#pricing">
             <Link to="/contacto">Contacto</Link>
@@ -23,15 +25,9 @@ export default function Navigation(podcastsList) {
         </Nav>
       </Navbar>
       <Routes>
-        <Route
-          path="/"
-          element={<PodcastList podcastsListAll={podcastsList} />}
-        />
-        <Route path="/detalle" element={<ChapterDetails />} />
-        <Route
-          path="/contacto"
-          element={<PodcastList podcastsListAll={podcastsList} />}
-        />
+        <Route path="/" element={<Home />} />
+        <Route path="/PodcastDetail/:id" element={<PodcastDetail />} />
+        <Route path="/contacto" element={<Home />} />
       </Routes>
     </>
   );

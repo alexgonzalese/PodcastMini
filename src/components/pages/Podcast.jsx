@@ -1,21 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "../podcast/Card";
+import "../../App.css";
+import { genComponentStyleHook } from "antd/es/theme/internal";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+function PodcastItem({ podcast }) {
+  const navigate = useNavigate();
+  const handleImageClick = () => {
+    navigate(`/PodcastDetail/${podcast.id}/${podcast.title}/${podcast.sumary}/${podcast.artist}/${podcast.imageUrl}`);
+  };
+
+  return (
+    <li className="podcast">
+      <img
+        src={podcast.imageUrl}
+        alt={podcast.title}
+        onClick={handleImageClick}
+      />
+      <h3>{podcast.title}</h3>
+      <p>{podcast.artist}</p>
+    </li>
+  );
+}
 
 function ListOfPodCast({ podcastsList }) {
   return (
-    <>
-      <div>
-        {podcastsList.map((podcastsList) => (
-          <Card
-            key={podcastsList.id}
-            title={podcastsList.title}
-            description={podcastsList.description}
-            imageUrl={podcastsList.imageUrl}
-            artist={podcastsList.artist}
-          />
-        ))}
-      </div>
-    </>
+    <ul className="podcasts">
+      {podcastsList.map((podcast) => (
+        <PodcastItem key={podcast.id} podcast={podcast} />
+      ))}
+    </ul>
   );
 }
 function NoPodcastResult() {
@@ -25,11 +40,7 @@ function NoPodcastResult() {
 export function PodcastList({ podcastsList }) {
   return (
     <>
-      {podcastsList.length > 0 ? (
-        <ListOfPodCast podcastsList={podcastsList} />
-      ) : (
-        <NoPodcastResult />
-      )}
+      <ListOfPodCast podcastsList={podcastsList} />
     </>
   );
 }

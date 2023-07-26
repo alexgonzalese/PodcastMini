@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Card from "../podcast/Card";
 import { PodcastList } from "./Podcast";
+import { usePodcast } from "../../hooks/usePodcast";
 
 function useQuery() {
   const [query, setQuery] = useState("");
@@ -25,24 +26,29 @@ function useQuery() {
   return { query, setQuery, error };
 }
 
-
-export default function Home(podcastsListAll) {
-  const result = podcastsListAll.podcastsListAll.podcastsList;
+export default function Home() {
+  // const result = podcastsListAll.podcastsListAll.podcastsList;
+  // console.log({ result });
   const { query, setQuery, error } = useQuery();
+   const { podcasts, filterPodcasts } = usePodcast({ query });
+
+
   const handleSummit = (e) => {
     e.preventDefault();
-    console.log({ query });
+    filterPodcasts();
   };
 
   const handleChange = (e) => {
     const newQuery = e.target.value;
     if (newQuery === " ") return;
+    console.log(newQuery);
     setQuery(e.target.value);
+    filterPodcasts();
   };
 
   return (
     <>
-      <div>
+      <div className="page">
         <header>
           <h1>Buscador de Podcast</h1>
           <form className="formPodcast" onSubmit={handleSummit}>
@@ -56,8 +62,8 @@ export default function Home(podcastsListAll) {
           </form>
           {error && <p style={{ color: "red" }}>{error}</p>}
         </header>
-        <main className="card-container">
-          <PodcastList podcastsList={result} />
+        <main>
+          <PodcastList podcastsList={podcasts} />
         </main>
       </div>
     </>
