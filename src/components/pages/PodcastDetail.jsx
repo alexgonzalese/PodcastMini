@@ -3,12 +3,19 @@ import { useParams } from "react-router-dom";
 import CardComponent from "./CardComponent";
 import GridComponents from "./GridComponents";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import EpisodeDetails from "./EpisodeDetailsCard";
 // `https://itunes.apple.com/lookup?id=${podcastId}&entity=podcastEpisode`
 
 export default function PodcastDetail() {
-  const { id, title, sumary, artist, imageUrl } = useParams();
+  const podcast = useSelector((state) => state.podcats);
+  const podcastId = podcast.id;
+  const title = podcast.title;
+  const sumary = podcast.shortDescription;
+  const artist = podcast.artist;
+  const imageUrl = podcast.imageUrl;
 
-  const apiUrl = `https://itunes.apple.com/lookup?id=${id}&entity=podcastEpisode`;
+  const apiUrl = `https://itunes.apple.com/lookup?id=${podcastId}&entity=podcastEpisode`;
 
   const [episodes, setEpisodes] = useState([]);
 
@@ -26,6 +33,7 @@ export default function PodcastDetail() {
             trackName: episode.trackName,
             trackTimeMillis: episode.trackTimeMillis,
             trackId: episode.trackId,
+            shortDescription: episode.shortDescription,
           }));
           //   console.log(extractedEpisodes);
           setEpisodes(extractedEpisodes);
@@ -39,13 +47,11 @@ export default function PodcastDetail() {
 
   return (
     <div className="detailspage">
-      <CardComponent
-        title={title}
-        summary={sumary}
-        artist={artist}
-        imageUrl={imageUrl}
-      />
+      <CardComponent />
+
       <GridComponents episodes={episodes} />
+
+      {/* <EpisodeDetails /> */}
     </div>
   );
 }

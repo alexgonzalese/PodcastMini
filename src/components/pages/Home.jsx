@@ -27,8 +27,7 @@ function useQuery() {
 }
 
 export default function Home() {
-  // const result = podcastsListAll.podcastsListAll.podcastsList;
-  // console.log({ result });
+
   const { query, setQuery, error } = useQuery();
    const { podcasts, filterPodcasts } = usePodcast({ query });
 
@@ -41,7 +40,6 @@ export default function Home() {
   const handleChange = (e) => {
     const newQuery = e.target.value;
     if (newQuery === " ") return;
-    console.log(newQuery);
     setQuery(e.target.value);
     filterPodcasts();
   };

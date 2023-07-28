@@ -12,7 +12,9 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { format } from "date-fns";
-
+import { useDispatch } from "react-redux";
+import { episodeDetail } from "../../redux/podcatsSlice";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
   {
@@ -36,7 +38,7 @@ const columns = [
   },
 ];
 
-function getEpisodeName(episode) {  
+function getEpisodeName(episode) {
   const episodeParts = episode.split(" ");
   const episodeName = episodeParts[episodeParts.length - 1];
   return episodeName;
@@ -47,16 +49,18 @@ function formatDate(dateString) {
 }
 function formatMillisecondsToMinutes(milliseconds) {
   const minutes = milliseconds / 60000;
-  return `${minutes.toFixed(2)} min`; 
+  return `${minutes.toFixed(2)} min`;
 }
 function createData(id, title, date, duration) {
   return { id, title, date, duration };
 }
 
+
 export default function GridComponents({ episodes }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+  const resultCount = episodes.length;
+  const dispatch = useDispatch();
   const rows = episodes.map((episode) =>
     createData(
       episode.trackId,
@@ -66,13 +70,10 @@ export default function GridComponents({ episodes }) {
     )
   );
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const handleCellClick = (columnId) => {
+    useDispatch();
+    dispatch(episodeDetail(columnId));
+    navigate(`/EpisodeDetail`);
   };
 
   return (
@@ -82,7 +83,7 @@ export default function GridComponents({ episodes }) {
           <AppBar position="static">
             <Toolbar>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                News
+                {resultCount}
               </Typography>
             </Toolbar>
           </AppBar>
@@ -104,7 +105,13 @@ export default function GridComponents({ episodes }) {
             </TableHead>
             <TableBody>
               {rows.map((row) => (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={row.id}
+                  onClick={() => handleCellClick(row.id)}
+                >
                   {columns.map((column) => {
                     const value = row[column.id];
                     const isIdColumn = column.id === "id";

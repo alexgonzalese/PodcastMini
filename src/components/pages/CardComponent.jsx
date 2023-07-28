@@ -1,20 +1,19 @@
 import React from 'react'
-import { Card } from "antd";
+import { Card, Divider } from "antd";
+import { useSelector } from 'react-redux';
 
 const { Meta } = Card;
-export default function CardComponent({ title, summary, artist, imageUrl }) {
+export default function CardComponent() {
+  const { title, summary, artist, imageUrl } = useSelector((state) => state.podcats);
   return (
     <Card
       hoverable
       style={{ width: 240 }}
-      cover={
-        <img
-          alt="example"
-          src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-        />
-      }
+      cover={<img alt={title} src={imageUrl} />}
     >
-      <Meta title="Europe Street beat" description="www.instagram.com" />
+      <Meta title={title} description={`by ${artist}`}/>
+      <Divider />
+      <Meta title="Description:" description={summary} />
     </Card>
   );
 }

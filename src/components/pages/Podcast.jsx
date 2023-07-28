@@ -4,11 +4,16 @@ import "../../App.css";
 import { genComponentStyleHook } from "antd/es/theme/internal";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addPostcast } from "../../redux/podcatsSlice.js";
 
 function PodcastItem({ podcast }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const handleImageClick = () => {
-    navigate(`/PodcastDetail/${podcast.id}/${podcast.title}/${podcast.sumary}/${podcast.artist}/${podcast.imageUrl}`);
+    dispatch(addPostcast(podcast));
+    navigate(`/PodcastDetail`);
   };
 
   return (
