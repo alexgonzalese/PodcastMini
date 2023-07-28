@@ -2,37 +2,37 @@ import React, { useEffect, useState } from "react";
 import { Card } from "antd";
 import { PlayCircleOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
+import { set } from "date-fns";
 
 const { Meta } = Card;
 
-export default function EpisodeDetailsCard() {
+export default function EpisodeDetailsCard(id) {
 
-  const episodeId = { id };
+  const episodeId = {id};
 
   const [trackName, setTrackName] = useState("");
   const [description, setDescription] = useState("");
-
-
+  const [episodeUrl, setEpisodeUrl] = useState("");
 
   useEffect(() => {
     if (episodeId) {
-      // Realizar la solicitud Fetch para obtener los datos del episodio
       const fetchEpisodeDetails = async () => {
         try {
-          const apiUrl = `https://itunes.apple.com/lookup?id=${id}&entity=podcastEpisode`;
+          const apiUrl = `https://itunes.apple.com/lookup?id=episodeId&entity=podcastEpisode`;
           const response = await fetch(apiUrl);
           const data = await response.json();
-
-          // Verificar que haya resultados y que sea un episodio válido
+console.log(data);
           if (
             data.resultCount > 0 &&
             data.results[0].wrapperType === "track" &&
             data.results[0].kind === "podcast-episode"
           ) {
             const episode = data.results[0];
-            const { trackName, description } = episode;
+            console.log(episode);
+            const { trackName, description, episodeUrl, } = episode;
             setTrackName(trackName);
             setDescription(description);
+            setEpisodeUrl(episodeUrl);
           }
         } catch (error) {
           console.error("Error al obtener los detalles del episodio:", error);
@@ -41,24 +41,16 @@ export default function EpisodeDetailsCard() {
 
       fetchEpisodeDetails();
     }
-  }, [episodeId, dispatch]);
+  }, [episodeId]);
 
   return (
-    <Card hoverable style={{ width: 300 }}>
-      <h3>{trackName}</h3>
+    <div>
+      <h2>{trackName}</h2>
       <p>{description}</p>
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <PlayCircleOutlined
-          style={{ fontSize: 24, color: "blue", marginRight: 8 }}
-        />
-        <span>Play Episode</span>
-      </div>
-    </Card>
+      <audio controls>
+        <source src={episodeUrl} type="audio/mpeg" />
+        Tu navegador no admite el elemento de audio.
+      </audio>
+    </div>
   );
 }

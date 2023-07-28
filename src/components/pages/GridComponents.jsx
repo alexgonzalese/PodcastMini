@@ -70,10 +70,10 @@ export default function GridComponents({ episodes }) {
     )
   );
 
+  const navigate = useNavigate();
+
   const handleCellClick = (columnId) => {
-    useDispatch();
-    dispatch(episodeDetail(columnId));
-    navigate(`/EpisodeDetail`);
+    navigate(`/EpisodeDetail/${columnId}`);
   };
 
   return (
